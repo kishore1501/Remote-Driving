@@ -3,7 +3,6 @@ import cv2
 import pickle
 import struct
 import threading
-import json
 
 def stream_video_with_telemetry(cam_id, server_socket):
     if server_socket is not None:
@@ -12,7 +11,8 @@ def stream_video_with_telemetry(cam_id, server_socket):
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     host_name = socket.gethostname()
     host_ip = socket.gethostbyname(host_name)
-    port = 9999 if cam_id == 0 else 9977  
+    port = 9999 if cam_id == 0 else 9977  # Used different ports for left and right cameras
+
     socket_address = (host_ip, port)
 
     server_socket.bind(socket_address)

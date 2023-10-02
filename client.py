@@ -72,7 +72,9 @@ def receive_video_with_telemetry(left_socket, right_socket):
     left_socket.close()
     right_socket.close()
 
-def send_command(client_socket, left_camera, right_camera):
+def send_command(client_socket):
+    global left_camera, right_camera
+
     while True:
         try:
             command = input("Enter Machine command:").strip()
@@ -90,10 +92,8 @@ def send_command(client_socket, left_camera, right_camera):
             break
 
 def run():
-    global left_camera, right_camera
-
     # Connect to the left and right camera server
-    host_ip = '192.168.82.136'
+    host_ip = '192.168.126.136'
     left_port, right_port, send_port = 9999, 9977, 9988
 
     left_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -109,7 +109,7 @@ def run():
 
     # Create threads for receiving video and sending commands
     receive_video_thread = threading.Thread(target=receive_video_with_telemetry, args=(left_socket, right_socket))
-    send_command_thread = threading.Thread(target=send_command_partial, args=(send_socket, left_camera, right_camera))
+    send_command_thread = threading.Thread(target=send_command_partial, args=(send_socket,))
 
     receive_video_thread.start()
     send_command_thread.start()
